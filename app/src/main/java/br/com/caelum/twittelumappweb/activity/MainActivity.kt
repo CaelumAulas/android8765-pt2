@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import br.com.caelum.twittelumappweb.R
+import br.com.caelum.twittelumappweb.fragments.BuscaTweetFragment
 import br.com.caelum.twittelumappweb.fragments.ListaTweetFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
             when (itemSelecionado.itemId) {
                 R.id.menu_lista -> exibe(ListaTweetFragment())
-                R.id.menu_busca -> exibe(Fragment())
+                R.id.menu_busca -> exibe(BuscaTweetFragment())
                 R.id.menu_mapa -> exibe(Fragment())
             }
 
