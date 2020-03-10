@@ -2,12 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/menu_lista"
         android:icon="@drawable/ic_format"
         android:title="Dashboard" />
     <item
+        android:id="@+id/menu_busca"
         android:icon="@drawable/ic_search"
         android:title="Buscar" />
     <item
+        android:id="@+id/menu_mapa"
         android:icon="@drawable/ic_map"
         android:title="Mapa" />
 

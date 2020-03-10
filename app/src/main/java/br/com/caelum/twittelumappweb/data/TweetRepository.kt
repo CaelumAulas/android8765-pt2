@@ -6,4 +6,14 @@ class TweetRepository {
 
     fun salva(tweet: Tweet) {}
 
+    fun lista() = listOf<Tweet>(
+            Tweet("Oi"),
+            Tweet("Oi"),
+            Tweet("Oi"),
+            Tweet("Oi"),
+            Tweet("Oi"),
+            Tweet("Oi"),
+            Tweet("Oi")
+    )
+
 }
