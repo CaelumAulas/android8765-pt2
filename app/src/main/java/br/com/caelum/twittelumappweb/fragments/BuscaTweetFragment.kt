@@ -44,10 +44,10 @@ class BuscaTweetFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-
-                val listaFiltrada = viewModel.filtra(newText)
-                lista?.adapter = TweetAdapter(listaFiltrada)
-
+                if (newText.isNotBlank()) {
+                    val listaFiltrada = viewModel.filtra(newText)
+                    lista?.adapter = TweetAdapter(listaFiltrada)
+                }
                 return false
             }
         })
