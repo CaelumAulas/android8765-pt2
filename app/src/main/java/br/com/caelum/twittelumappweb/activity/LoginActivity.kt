@@ -1,7 +1,10 @@
 package br.com.caelum.twittelumappweb.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import br.com.caelum.twittelumappweb.R
 import br.com.caelum.twittelumappweb.modelo.Usuario
@@ -18,6 +21,16 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        viewModel.getUsuario().observe(this, Observer {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        })
+
+        viewModel.getErro().observe(this, Observer {
+            Toast.makeText(this, "${it.message}", Toast.LENGTH_LONG).show()
+        })
 
         login_criar.setOnClickListener { viewModel.criar(pegaUsuarioDaTela()) }
         login_entrar.setOnClickListener { viewModel.logar(pegaUsuarioDaTela()) }
