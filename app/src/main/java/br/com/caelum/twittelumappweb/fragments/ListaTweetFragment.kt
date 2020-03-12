@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import br.com.caelum.twittelumappweb.R
 import br.com.caelum.twittelumappweb.adapter.TweetAdapter
+import br.com.caelum.twittelumappweb.modelo.Tweet
 import br.com.caelum.twittelumappweb.viewmodel.TweetViewModel
 import br.com.caelum.twittelumappweb.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.lista_tweet_fragment.view.*
@@ -18,6 +20,11 @@ class ListaTweetFragment : Fragment() {
         ViewModelProviders.of(activity!!, ViewModelFactory).get(TweetViewModel::class.java)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.busca()
+    }
+
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -26,8 +33,10 @@ class ListaTweetFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.lista_tweet_fragment, container, false)
 
-        val lista = viewModel.lista()
-        view.lista.adapter = TweetAdapter(lista)
+        viewModel.lista().observe(activity!!, Observer { lista: List<Tweet> ->
+            view.lista.adapter = TweetAdapter(lista)
+
+        })
 
         return view
 
