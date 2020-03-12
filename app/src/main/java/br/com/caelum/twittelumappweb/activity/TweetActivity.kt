@@ -19,6 +19,7 @@ import br.com.caelum.twittelumappweb.R
 import br.com.caelum.twittelumappweb.decodificaParaBase64
 import br.com.caelum.twittelumappweb.modelo.Tweet
 import br.com.caelum.twittelumappweb.viewmodel.TweetViewModel
+import br.com.caelum.twittelumappweb.viewmodel.UsuarioViewModel
 import br.com.caelum.twittelumappweb.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_tweet.*
 import java.io.File
@@ -28,6 +29,10 @@ class TweetActivity : AppCompatActivity() {
 
     private val viewModel: TweetViewModel by lazy {
         ViewModelProviders.of(this, ViewModelFactory).get(TweetViewModel::class.java)
+    }
+
+    private val usuarioViewModel: UsuarioViewModel by lazy {
+        ViewModelProviders.of(this, ViewModelFactory).get(UsuarioViewModel::class.java)
     }
 
     private var localFoto: String? = null
@@ -105,7 +110,9 @@ class TweetActivity : AppCompatActivity() {
 
         val foto: String? = tweet_foto.tag as String?
 
-        return Tweet(mensagemDoTweet, foto)
+        val usuario = usuarioViewModel.getUsuario().value!!
+
+        return Tweet(mensagemDoTweet, foto, usuario)
     }
 
 

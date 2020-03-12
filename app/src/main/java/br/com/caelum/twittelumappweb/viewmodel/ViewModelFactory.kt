@@ -3,6 +3,7 @@ package br.com.caelum.twittelumappweb.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import br.com.caelum.twittelumappweb.api.InicializadorDoRetrofit
+import br.com.caelum.twittelumappweb.api.TweetApi
 import br.com.caelum.twittelumappweb.api.UsuarioApi
 import br.com.caelum.twittelumappweb.data.TweetRepository
 import br.com.caelum.twittelumappweb.data.UsuarioRepository
@@ -12,10 +13,12 @@ import java.lang.Exception
 object ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
     private val retrofit: Retrofit by lazy { InicializadorDoRetrofit.getRetrofit() }
+
     private val usuarioApi: UsuarioApi by lazy { UsuarioApi(retrofit) }
     private val usuarioRepository by lazy { UsuarioRepository(usuarioApi) }
 
-    private val tweetRepository: TweetRepository by lazy { TweetRepository() }
+    private val tweetApi: TweetApi by lazy { TweetApi(retrofit) }
+    private val tweetRepository: TweetRepository by lazy { TweetRepository(tweetApi) }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T = when (modelClass) {
         TweetViewModel::class.java -> TweetViewModel(tweetRepository) as T

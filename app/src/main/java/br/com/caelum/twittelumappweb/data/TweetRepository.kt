@@ -1,10 +1,13 @@
 package br.com.caelum.twittelumappweb.data
 
+import br.com.caelum.twittelumappweb.api.TweetApi
 import br.com.caelum.twittelumappweb.modelo.Tweet
 
-class TweetRepository {
+class TweetRepository(private val api: TweetApi) {
 
-    fun salva(tweet: Tweet) {}
+    fun salva(tweet: Tweet) {
+        api.cria(tweet)
+    }
 
     fun lista() = listOf<Tweet>(
             Tweet("Oi"),

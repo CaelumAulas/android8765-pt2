@@ -1,7 +1,8 @@
 package br.com.caelum.twittelumappweb.modelo
 
 data class Tweet(val mensagem: String,
-                 val foto: String? = null) {
+                 val foto: String? = null,
+                 val dono: Usuario? = null) {
 
     override fun toString(): String {
         return mensagem
