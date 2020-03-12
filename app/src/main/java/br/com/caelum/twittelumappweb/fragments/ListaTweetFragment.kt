@@ -20,11 +20,6 @@ class ListaTweetFragment : Fragment() {
         ViewModelProviders.of(activity!!, ViewModelFactory).get(TweetViewModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.busca()
-    }
-
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -33,8 +28,22 @@ class ListaTweetFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.lista_tweet_fragment, container, false)
 
+        val swipe = view.swipe
+
+        swipe.setColorSchemeResources(
+                android.R.color.holo_blue_dark,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_red_dark
+        )
+
+        swipe.setOnRefreshListener {
+            viewModel.busca()
+        }
+
         viewModel.lista().observe(activity!!, Observer { lista: List<Tweet> ->
             view.lista.adapter = TweetAdapter(lista)
+            swipe.isRefreshing = false
 
         })
 
