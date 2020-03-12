@@ -1,6 +1,5 @@
 package br.com.caelum.twittelumappweb.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.caelum.twittelumappweb.api.UsuarioApi
@@ -18,7 +17,10 @@ class UsuarioRepository(private val api: UsuarioApi) {
 
     fun criar(usuario: Usuario) {
         api.cria(usuario, funcaoSucesso = funcaoSucesso(), funcaoErro = funcaoErro())
+    }
 
+    fun logar(usuario: Usuario) {
+        api.loga(usuario, funcaoSucesso = funcaoSucesso(), funcaoErro = funcaoErro())
     }
 
     private fun funcaoSucesso(): (Usuario) -> Unit {
@@ -31,10 +33,6 @@ class UsuarioRepository(private val api: UsuarioApi) {
         return { throwable ->
             erroLiveData.postValue(throwable)
         }
-    }
-
-    fun logar(usuario: Usuario) {
-        Log.i("logou", "$usuario")
     }
 
 }

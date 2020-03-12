@@ -12,19 +12,27 @@ class UsuarioApi(retrofit: Retrofit) {
 
     private val service: UsuarioService by lazy { retrofit.create(UsuarioService::class.java) }
 
-
     fun cria(
             usuario: Usuario,
             funcaoSucesso: (Usuario) -> Unit,
             funcaoErro: (Throwable) -> Unit
     ) {
-        val chamadaProServidor = service.cria(usuario)
+        service.cria(usuario).enqueue(callback(funcaoErro, funcaoSucesso))
+    }
 
-        chamadaProServidor.enqueue(object : Callback<Usuario> {
+    fun loga(
+            usuario: Usuario,
+            funcaoSucesso: (Usuario) -> Unit,
+            funcaoErro: (Throwable) -> Unit
+    ) {
+        service.loga(usuario).enqueue(callback(funcaoErro, funcaoSucesso))
+    }
+
+    private fun callback(funcaoErro: (Throwable) -> Unit, funcaoSucesso: (Usuario) -> Unit): Callback<Usuario> {
+        return object : Callback<Usuario> {
             override fun onFailure(call: Call<Usuario>, erro: Throwable) {
                 funcaoErro(erro)
             }
-
             override fun onResponse(call: Call<Usuario>, response: Response<Usuario>) {
 
                 if (response.isSuccessful) {
@@ -34,12 +42,15 @@ class UsuarioApi(retrofit: Retrofit) {
                     funcaoErro(Throwable(response.errorBody()?.string()))
                 }
             }
-        })
+        }
     }
 
     private interface UsuarioService {
 
         @POST("/usuario")
         fun cria(@Body usuario: Usuario): Call<Usuario>
+
+        @POST("/usuario/login")
+        fun loga(@Body usuario: Usuario): Call<Usuario>
     }
 }
