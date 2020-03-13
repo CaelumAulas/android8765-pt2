@@ -8,10 +8,9 @@ import androidx.lifecycle.ViewModelProviders
 import br.com.caelum.twittelumappweb.R
 import br.com.caelum.twittelumappweb.fragments.BuscaTweetFragment
 import br.com.caelum.twittelumappweb.fragments.ListaTweetFragment
+import br.com.caelum.twittelumappweb.fragments.MapaFragment
 import br.com.caelum.twittelumappweb.viewmodel.TweetViewModel
 import br.com.caelum.twittelumappweb.viewmodel.ViewModelFactory
-import com.google.android.gms.maps.MapFragment
-import com.google.android.gms.maps.SupportMapFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             when (itemSelecionado.itemId) {
                 R.id.menu_lista -> exibe(ListaTweetFragment())
                 R.id.menu_busca -> exibe(BuscaTweetFragment())
-                R.id.menu_mapa -> exibe(SupportMapFragment())
+                R.id.menu_mapa -> exibe(MapaFragment())
             }
 
             return@setOnNavigationItemSelectedListener true
