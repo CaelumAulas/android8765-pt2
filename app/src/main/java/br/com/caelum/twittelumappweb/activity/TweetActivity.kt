@@ -1,5 +1,6 @@
 package br.com.caelum.twittelumappweb.activity
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
@@ -14,9 +15,11 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.core.content.PermissionChecker
 import androidx.lifecycle.ViewModelProviders
 import br.com.caelum.twittelumappweb.R
 import br.com.caelum.twittelumappweb.decodificaParaBase64
+import br.com.caelum.twittelumappweb.gps.GPS
 import br.com.caelum.twittelumappweb.modelo.Tweet
 import br.com.caelum.twittelumappweb.viewmodel.TweetViewModel
 import br.com.caelum.twittelumappweb.viewmodel.UsuarioViewModel
@@ -35,6 +38,8 @@ class TweetActivity : AppCompatActivity() {
         ViewModelProviders.of(this, ViewModelFactory).get(UsuarioViewModel::class.java)
     }
 
+    private val gps: GPS by lazy { GPS(this) }
+
     private var localFoto: String? = null
 
 
@@ -44,6 +49,22 @@ class TweetActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        if (PermissionChecker.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PermissionChecker.PERMISSION_GRANTED) {
+            gps.buscaLocalizaco()
+            Toast.makeText(this, "tem permissão", Toast.LENGTH_LONG).show()
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 123)
+        }
+
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 123 && grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
+            gps.buscaLocalizaco()
+        } else {
+            Toast.makeText(this, "não foi possivel buscar sua localizacao", Toast.LENGTH_LONG).show()
+        }
     }
 
 
@@ -112,7 +133,9 @@ class TweetActivity : AppCompatActivity() {
 
         val usuario = usuarioViewModel.getUsuario().value!!
 
-        return Tweet(mensagemDoTweet, foto, usuario)
+        val (latitude, longitude) = gps.getCoordenadas()
+
+        return Tweet(mensagemDoTweet, foto, usuario, latitude, longitude)
     }
 
 
