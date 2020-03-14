@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import br.com.caelum.twittelumappweb.R
 import br.com.caelum.twittelumappweb.modelo.Usuario
+import br.com.caelum.twittelumappweb.servico.MeuServico
 import br.com.caelum.twittelumappweb.viewmodel.UsuarioViewModel
 import br.com.caelum.twittelumappweb.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_login.*
@@ -21,6 +22,8 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        startService(Intent(this, MeuServico::class.java))
 
         viewModel.getUsuario().observe(this, Observer {
             val intent = Intent(this, MainActivity::class.java)
@@ -44,5 +47,10 @@ class LoginActivity : AppCompatActivity() {
         val username = login_campoUsername.text.toString()
 
         return Usuario(username = username, nome = nome, senha = senha)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopService(Intent(this, MeuServico::class.java))
     }
 }
